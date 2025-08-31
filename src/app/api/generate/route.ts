@@ -41,6 +41,7 @@ export async function POST(req: Request) {
 
     Rules: 
     - Each generated prompt must include the subject from the user's prompt given, enviornment/background where the subject is placed, deitals & composition (pose,mood,perspective, lighting), style/medium (e.g., photorealistic, anime, cyberpunk digital art, watercolor painting, oil painting, cinematic, 3D render, low-poly, etc.)
+    - Each prmpt must contain this prompt "Use the aspect ratio of the last image (do not use its content or style)."
     - If it is a thumbnail based then add details of the character and place it one side and the title to other side.
     - Take the user request and return a JSON object with:
         - "prompts" (array of 2 different style variations)
@@ -92,8 +93,21 @@ Style the image in a high-energy fantasy digital painting style, with vivid colo
 
     // const imageData = fs.readFileSync(imagePath);
     // const base64Image = imageData.toString("base64");
+    let imgAspectPath = ""
 
-    const imagePath2 = path.join(process.cwd(), "public", "aspect2.png");
+    if(aspect === "1:1"){
+      imgAspectPath = "aspect_1_1.avif"
+    }else if(aspect === "2:3"){
+      imgAspectPath = "aspect_2_3"
+    }else if(aspect === "3:2"){
+      imgAspectPath = "aspect_3_2"
+    }else if(aspect === "4:5"){
+      imgAspectPath = "aspect_4_5"
+    }else{
+      imgAspectPath = "aspect2.png"
+    }
+
+    const imagePath2 = path.join(process.cwd(), "public", imgAspectPath);
 
     const imageData2 = fs.readFileSync(imagePath2);
     const base64Image2 = imageData2.toString("base64");
@@ -107,7 +121,7 @@ Style the image in a high-energy fantasy digital painting style, with vivid colo
           ]
           if (uploadedImg) {
             imgPrompts = [
-              { text: `${txtPrompt}. Aspect ration: ${aspect}` },
+              { text: `${txtPrompt}` },
               ...images.map((base64: string) => ({
                 inlineData: {
                   mimeType: "image/png", // or "image/jpeg"

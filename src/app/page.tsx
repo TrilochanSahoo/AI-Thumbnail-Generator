@@ -14,7 +14,7 @@ function Navbar() {
           <span className="font-semibold tracking-tight text-slate-900">PixelForge</span>
         </Link>
         <nav className="hidden items-center gap-6 text-sm text-slate-700 md:flex">
-          <a href="/sign-in" className="hover:text-slate-900">
+          <a href="/playground" className="hover:text-slate-900">
             Get Started
           </a>
           <a href="/pricing" className="hover:text-slate-900">

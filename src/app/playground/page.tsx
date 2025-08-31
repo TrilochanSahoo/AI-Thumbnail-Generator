@@ -229,7 +229,7 @@ export default function Page() {
                         <img
                           src={m.url || "/placeholder.svg"}
                           alt={`Generated thumbnail ${m.aspect}`}
-                          className='w-full h-auto object-cover'
+                          className='w-auto h-auto object-cover'
                         />
                       </div>
                       <div className='flex items-center justify-between'>
