@@ -1,5 +1,6 @@
 import { GoogleGenAI, Modality } from "@google/genai";
-import * as fs from "node:fs";
+import fs from "fs";
+import path from "path";
 import "dotenv"
 
 const geminiAi = new GoogleGenAI({});
@@ -49,7 +50,7 @@ export const generativeModel = genAI.getGenerativeModel({
 export async function POST(request:Request) {
     try {
 
-        const prompt =
+        const promptText =
             `A photorealistic close-up portrait of an elderly Japanese ceramicist with
 deep, sun-etched wrinkles and a warm, knowing smile. He is carefully
 inspecting a freshly glazed tea bowl. The setting is his rustic,
@@ -61,6 +62,32 @@ streaming through a window, highlighting the fine texture of the clay.`
         //     contents: prompt,
         // });
 
+  const imagePath = path.join(process.cwd(), "public", "hitesh_chai_code.avif");
+
+  const imageData = fs.readFileSync(imagePath);
+  const base64Image = imageData.toString("base64");
+
+  const imagePath2 = path.join(process.cwd(), "public", "aspect2.png");
+
+  const imageData2 = fs.readFileSync(imagePath2);
+  const base64Image2 = imageData2.toString("base64");
+
+  const prompt = [
+    { text: "Create a thumbnail image with the title 'Class of Clan' displayed prominently.Only use the aspect ratio of the second image (do not use its content or style). Feature the provided character, cropped place one side of the image either Left or right and other side place the text. Then modified to wear a regal king outfit (crown, royal robe, armor details). The background should reflect the 'Clash of Clans' mobile game theme, with vibrant battle scenery, fantasy elements, and castle-like structures. Style the image for a gaming platform thumbnail, using soft, diffused highlights and eliminating harsh shadows to make the character and title stand out clearly." },
+    {
+      inlineData: {
+        mimeType: "image/png",
+        data: base64Image,
+      },
+    },
+    {
+    inlineData: {
+      mimeType: "image/jpeg",
+      data: base64Image2, // base64 string of second image
+    },
+  },
+  ];
+
         const result = await imageGenerationModel.generateContent(prompt);
         const response = await result.response;
 
@@ -68,7 +95,7 @@ streaming through a window, highlighting the fine texture of the clay.`
 
         if(parts && parts.length > 0){
             for (const part of parts) {
-                console.log(part)
+                // console.log(part)
                 if (part.text) {
                     console.log(part.text);
                 } 
@@ -83,7 +110,7 @@ streaming through a window, highlighting the fine texture of the clay.`
             }
         }
 
-        return NextResponse.json(response);
+        return NextResponse.json({message : "done..."});
 
         
     } catch (error) {
