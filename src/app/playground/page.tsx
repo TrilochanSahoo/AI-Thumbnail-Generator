@@ -33,9 +33,14 @@ import { cn } from "@/lib/utils";
 import { Dropzone } from "@/components/dropzone";
 import { DraggableBoard, type BoardItem } from "@/components/draggable-board";
 
-type GenMessage =
-  | { id: string; role: "user"; content: string }
-  | { id: string; role: "image"; prompt: string; url: string; aspect: string };
+type GenMessage = {
+  id: string;
+  role: "user" | "assistant" | "image";
+  prompt?: string;
+  url?: string;
+  aspect?: "1:1" | "16:9" | "3:2" | "4:5" | "2:3";
+};
+
 
 const ASPECT_OPTIONS = ["1:1", "16:9", "3:2", "4:5", "2:3"] as const;
 type Aspect = (typeof ASPECT_OPTIONS)[number];
@@ -43,8 +48,9 @@ type Aspect = (typeof ASPECT_OPTIONS)[number];
 export default function Page() {
   const [messages, setMessages] = useState<GenMessage[]>([]);
   const [prompt, setPrompt] = useState("");
-  const [aspect, setAspect] = useState<Aspect>("1:1");
+  const [aspect, setAspect] = useState<Aspect>("16:9");
   const [hiRes, setHiRes] = useState<boolean>(false);
+  const [textStyle, setTextStyle] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
   const [uploads, setUploads] = useState<string[]>([]);
@@ -89,22 +95,35 @@ export default function Page() {
         prompt,
         aspect,
         hiRes,
+        textStyle,
       });
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt, aspect, hiRes, images: uploads }),
+        body: JSON.stringify({ prompt, aspect, hiRes,textStyle, images: uploads }),
       });
       const data = await res.json().catch(() => null);
-      const url =
-        data?.imageUrl ||
-        `/placeholder.svg?height=720&width=1280&query=generated%20thumbnail%20${encodeURIComponent(
-          prompt.slice(0, 24)
-        )}`;
+
+      // setMessages((m) => [
+      //   ...m,
+      //   { id: crypto.randomUUID(), role: "image", prompt, url, aspect },
+      // ]);
+
+      const urls: string[] = data?.message || [];
+
       setMessages((m) => [
         ...m,
-        { id: crypto.randomUUID(), role: "image", prompt, url, aspect },
+        ...urls.map(
+          (url): GenMessage => ({
+            id: crypto.randomUUID(),
+            role: "image",
+            prompt,
+            url,
+            aspect,
+          })
+        ),
       ]);
+
     } catch (e) {
       console.error("[v0] Generation error", e);
     } finally {
@@ -185,16 +204,6 @@ export default function Page() {
                   animate={{ opacity: 1, y: 0 }}
                   className='flex justify-start'
                 >
-                  <div
-                    className='rounded-lg border bg-sky-200/30 px-3 py-2 text-sm max-w-prose'
-                    draggable
-                    onDragStart={(e) =>
-                      e.dataTransfer.setData("text/pastel-text", m.content)
-                    }
-                    title='Drag text into Canvas editor'
-                  >
-                    {m.content}
-                  </div>
                 </motion.div>
               ) : (
                 <motion.div
@@ -211,9 +220,9 @@ export default function Page() {
                     <CardContent className='grid gap-3'>
                       <div
                         className='relative w-full overflow-hidden rounded-md border'
-                        draggable
+                        
                         onDragStart={(e) =>
-                          e.dataTransfer.setData("text/pastel-image-src", m.url)
+                          e.dataTransfer.setData("text/pastel-image-src", m.url || "")
                         }
                         title='Drag into Canvas editor'
                       >
@@ -225,31 +234,23 @@ export default function Page() {
                       </div>
                       <div className='flex items-center justify-between'>
                         <div className='text-xs opacity-70'>
-                          Aspect {m.aspect} · Prompt: {m.prompt.slice(0, 60)}
-                          {m.prompt.length > 60 ? "…" : ""}
+                          Aspect {m.aspect} · Prompt: {m.prompt?.slice(0, 60)}
+                          {m.prompt?.length && m.prompt.length > 60 ? "…" : ""}
                         </div>
                         <div className='flex gap-2'>
                           <Button
                             variant='outline'
                             className='border-sky-200 bg-sky-200/30'
-                            onClick={() => downloadImage(m.url)}
+                            onClick={() => downloadImage(m.url || "")}
                           >
                             <Download className='mr-2 h-4 w-4' />
                             Download
                           </Button>
                           <Button
                             variant='outline'
-                            className='border-teal-200 bg-teal-200/50'
-                            onClick={() => addImageToCanvas(m.url)}
-                          >
-                            <Pencil className='mr-2 h-4 w-4' />
-                            Edit
-                          </Button>
-                          <Button
-                            variant='outline'
                             className='border-rose-200 bg-rose-200/30'
                             onClick={() => {
-                              setPrompt(m.prompt);
+                              setPrompt(m.prompt || "");
                               listRef.current?.scrollTo({
                                 top: listRef.current.scrollHeight,
                                 behavior: "smooth",
