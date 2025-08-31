@@ -88,27 +88,27 @@ streaming through a window, highlighting the fine texture of the clay.`
   },
   ];
 
-        const result = await imageGenerationModel.generateContent(prompt);
-        const response = await result.response;
+        // const result = await imageGenerationModel.generateContent(prompt);
+        // const response = await result.response;
 
-        const parts = response.candidates?.[0]?.content?.parts;
+        // const parts = response.candidates?.[0]?.content?.parts;
 
-        if(parts && parts.length > 0){
-            for (const part of parts) {
-                // console.log(part)
-                if (part.text) {
-                    console.log(part.text);
-                } 
-                else if (part.inlineData) {
-                    const imageData = part.inlineData.data;
-                    if(imageData){
-                        const buffer = Buffer.from(imageData, "base64");
-                        fs.writeFileSync("gemini-native-image.png", buffer);
-                        console.log("Image saved as gemini-native-image.png");
-                    }
-                }
-            }
-        }
+        // if(parts && parts.length > 0){
+        //     for (const part of parts) {
+        //         // console.log(part)
+        //         if (part.text) {
+        //             console.log(part.text);
+        //         } 
+        //         else if (part.inlineData) {
+        //             const imageData = part.inlineData.data;
+        //             if(imageData){
+        //                 const buffer = Buffer.from(imageData, "base64");
+        //                 fs.writeFileSync("gemini-native-image.png", buffer);
+        //                 console.log("Image saved as gemini-native-image.png");
+        //             }
+        //         }
+        //     }
+        // }
 
         return NextResponse.json({message : "done..."});
 
