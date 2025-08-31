@@ -11,7 +11,7 @@ function Navbar() {
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
         <Link href="/" className="flex items-center gap-2">
           <span aria-hidden className="inline-block h-6 w-6 rounded-md border border-slate-300 bg-emerald-200" />
-          <span className="font-semibold tracking-tight text-slate-900">PastelThumb</span>
+          <span className="font-semibold tracking-tight text-slate-900">PixelForge</span>
         </Link>
         <nav className="hidden items-center gap-6 text-sm text-slate-700 md:flex">
           <a href="/sign-in" className="hover:text-slate-900">
@@ -96,7 +96,7 @@ export default function LandingPage() {
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="text-balance text-center text-4xl font-semibold tracking-tight text-slate-900 md:text-6xl"
         >
-          A place to display your masterpiece.
+          Generate & Share AI Images Instantly.
         </motion.h1>
 
         <motion.p
@@ -106,8 +106,7 @@ export default function LandingPage() {
           transition={{ delay: 0.06, duration: 0.6, ease: "easeOut" }}
           className="mx-auto mt-5 max-w-2xl text-center leading-relaxed text-slate-600"
         >
-          Showcase thumbnails, covers, and poster art with a soft pastel aesthetic. Create, share, and sell designs that
-          resonate.
+          Turn your ideas into stunning visuals with Gemini-powered AI and Cloudinary hosting. Fast, reliable, and ready to share anywhere.
         </motion.p>
 
         {/* Animated card rail */}
@@ -133,13 +132,13 @@ export default function LandingPage() {
           transition={{ delay: 0.15, duration: 0.5 }}
           className="mt-10 flex items-center justify-center gap-3"
         >
-          <Link
+          {/* <Link
             href="/sign-up"
             className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-emerald-200 px-5 py-3 text-slate-900 hover:bg-emerald-300"
           >
             Join for $9.99/m
             <ArrowRight className="h-4 w-4" />
-          </Link>
+          </Link> */}
           <Link
             href="/sign-in"
             className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-3 text-slate-800 hover:bg-slate-50"
@@ -152,10 +151,9 @@ export default function LandingPage() {
       {/* Optional: show provided mock as reference using the Source URL (as requested) */}
       <section className="mx-auto max-w-6xl px-4 pb-16">
         <div className="rounded-xl border border-slate-200 bg-sky-200/20 p-4">
-          <p className="mb-3 text-sm text-slate-600">Reference design used for inspiration:</p>
+          <p className="mb-3 text-sm text-slate-600">Step in and track your prompts, view generated images, and manage your uploads in one simple interface.</p>
           <img
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-lObfsbEyp9aMdC4Mo2NyDd17qcAEbu.png"
-            alt="Landing inspiration reference"
+            src="image.png"
             className="w-full rounded-lg border border-slate-200"
           />
         </div>
@@ -163,7 +161,7 @@ export default function LandingPage() {
 
       <footer className="border-t border-slate-200 bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-8 text-sm text-slate-500">
-          <span>© {new Date().getFullYear()} PastelThumb</span>
+          <span>© {new Date().getFullYear()} PixelForge</span>
           <div className="flex gap-4">
             <Link href="/sign-in" className="hover:text-slate-700">
               Sign in

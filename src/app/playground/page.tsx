@@ -58,7 +58,7 @@ export default function Page() {
   const [editorOpen, setEditorOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [rightOpen, setRightOpen] = useState(true);
-  const STORAGE_KEY = "pastelthumb-board";
+  const STORAGE_KEY = "PixelForge-board";
 
   const listRef = useRef<HTMLDivElement>(null);
 
@@ -377,7 +377,7 @@ function Brand() {
   return (
     <div className='flex items-center gap-2'>
       <div className='size-8 rounded-md bg-teal-200' />
-      <div className='font-semibold'>PastelThumb</div>
+      <div className='font-semibold'>PixelForge</div>
     </div>
   );
 }
