@@ -137,10 +137,6 @@ Style the image in a high-energy fantasy digital painting style, with vivid colo
               else if (part.inlineData) {
                 const imageData = part.inlineData.data;
                 if (imageData) {
-
-                  const buffer = Buffer.from(imageData, "base64")
-                  fs.writeFileSync(`geminiAi-native-image.png`, buffer)
-                  console.log("Image saved successfully")
                   
                   const url = await uploadBase64ToCloudinary(`data:image/png;base64,${imageData}`, "gemini-outputs");
                   generatedUploadedUrl.push(url.url);
