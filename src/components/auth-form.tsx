@@ -21,23 +21,49 @@ export function AuthForm({ mode }: { mode: Mode }) {
   const cta = mode === "sign-in" ? "Sign in" : "Sign up"
 
   async function onSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    if (!email || !password) {
-      toast({ title: "Missing info", description: "Please enter email and password." })
-      return
-    }
-    setLoading(true)
-    try {
-      // Simulate request; replace with your auth call
-      await new Promise((r) => setTimeout(r, 900))
-      toast({ title: `${cta} successful`, description: "You can now access the app." })
-      // window.location.href = "/"
-    } catch {
-      toast({ title: "Something went wrong", description: "Please try again." })
-    } finally {
-      setLoading(false)
-    }
+  e.preventDefault();
+
+  const FIXED_EMAIL = "tri@gmail.com";
+  const FIXED_PASSWORD = "1234567";
+
+  if (!email || !password) {
+    toast({
+      title: "Missing info",
+      description: "Please enter email and password.",
+    });
+    return;
   }
+
+  if (email !== FIXED_EMAIL || password !== FIXED_PASSWORD) {
+    toast({
+      title: "Invalid credentials",
+      description: "Email or password is incorrect.",
+    });
+    return;
+  }
+
+  setLoading(true);
+  try {
+    // Simulate request (you could replace with real auth)
+    await new Promise((r) => setTimeout(r, 900));
+
+    toast({
+      title: "Login successful",
+      description: "Redirecting to playground...",
+    });
+
+    // ✅ redirect to playground
+    window.location.href = "/playground";
+  } catch {
+    toast({
+      title: "Something went wrong",
+      description: "Please try again.",
+    });
+  } finally {
+    setLoading(false);
+  }
+}
+
 
   return (
     <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
