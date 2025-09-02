@@ -41,7 +41,6 @@ export async function POST(req: Request) {
 
     Rules: 
     - Each generated prompt must include the subject from the user's prompt given, enviornment/background where the subject is placed, deitals & composition (pose,mood,perspective, lighting), style/medium (e.g., photorealistic, anime, cyberpunk digital art, watercolor painting, oil painting, cinematic, 3D render, low-poly, etc.)
-    - Each prmpt must contain this prompt "Use the aspect ratio of the last image (do not use its content or style)."
     - If it is a thumbnail based then add details of the character and place it one side and the title to other side.
     - Take the user request and return a JSON object with:
         - "prompts" (array of 2 different style variations)
